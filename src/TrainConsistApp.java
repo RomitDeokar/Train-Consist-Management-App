@@ -1,40 +1,67 @@
 import java.util.*;
+import java.util.stream.Collectors;
+
+class Bogie {
+    String name;
+    int capacity;
+
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + capacity + ")";
+    }
+}
 
 public class TrainConsistApp {
-
     public static void main(String[] args) {
 
-        System.out.println("=== UC12: Safety Compliance Check ===");
+        System.out.println("=== UC13: Performance Comparison (Loop vs Stream) ===");
 
-        // Step 1: Create goods bogies
-        List<GoodsBogie> bogies = new ArrayList<>();
+        List<Bogie> bogies = new ArrayList<>();
 
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        bogies.add(new GoodsBogie("Open", "Coal"));
-        bogies.add(new GoodsBogie("Box", "Grain"));
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum")); // valid
-
-        // ❌ Try this to test failure:
-        // bogies.add(new GoodsBogie("Cylindrical", "Coal"));
-
-        // Step 2: Safety validation using allMatch()
-        boolean isSafe = bogies.stream()
-                .allMatch(b ->
-                        !b.getType().equals("Cylindrical") ||
-                                b.getCargo().equals("Petroleum")
-                );
-
-        // Step 3: Display bogies
-        System.out.println("\nBogies:");
-        for (GoodsBogie b : bogies) {
-            System.out.println(b);
+        // Create large dataset for better comparison
+        for (int i = 0; i < 10000; i++) {
+            bogies.add(new Bogie("Sleeper", 72));
+            bogies.add(new Bogie("AC Chair", 60));
+            bogies.add(new Bogie("First Class", 24));
+            bogies.add(new Bogie("Luxury AC", 80));
         }
 
-        // Step 4: Result
-        if (isSafe) {
-            System.out.println("\nTrain is SAFE ✅");
-        } else {
-            System.out.println("\nTrain is UNSAFE ❌");
+        // ---------------- LOOP METHOD ----------------
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > 60) {
+                loopFiltered.add(b);
+            }
         }
+
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        // ---------------- STREAM METHOD ----------------
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamFiltered = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // ---------------- OUTPUT ----------------
+        System.out.println("\nLoop Filtered Count: " + loopFiltered.size());
+        System.out.println("Stream Filtered Count: " + streamFiltered.size());
+
+        System.out.println("\nLoop Execution Time: " + loopTime + " ns");
+        System.out.println("Stream Execution Time: " + streamTime + " ns");
+
+        // Optional: check correctness
+        System.out.println("\nResults match: " + (loopFiltered.size() == streamFiltered.size()));
     }
 }
