@@ -1,9 +1,8 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Train Consist Management App - UC8
- * Demonstrates Stream API filtering
+ * Train Consist Management App - UC7
+ * Demonstrates sorting using Comparator
  */
 public class TrainConsistApp {
 
@@ -11,7 +10,7 @@ public class TrainConsistApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Create bogie list (reuse UC7 idea)
+        // Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
@@ -19,19 +18,29 @@ public class TrainConsistApp {
         bogies.add(new Bogie("First Class", 24));
         bogies.add(new Bogie("Luxury AC", 80));
 
-        // Filter bogies with capacity > 60
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Sort bogies by capacity (ascending)
+        bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        // Display result
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
+        // Display sorted bogies
+        System.out.println("\nSorted Bogies (by Capacity):");
+        for (Bogie b : bogies) {
             System.out.println(b);
         }
+    }
+}
 
-        // Verify original list unchanged
-        System.out.println("\nOriginal Bogie List:");
-        System.out.println(bogies);
+// Bogie class
+class Bogie {
+    String name;
+    int capacity;
+
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Capacity: " + capacity + ")";
     }
 }
