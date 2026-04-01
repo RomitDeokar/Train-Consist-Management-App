@@ -1,30 +1,50 @@
-import java.util.*;
+import java.util.regex.*;
+import java.util.Scanner;
 
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=== UC10: Total Seat Calculation using reduce() ===");
+        System.out.println("=== UC11: Train ID & Cargo Code Validation ===");
 
-        // Step 1: Create list of bogies
-        List<Bogie> bogies = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Luxury AC", 80));
+        // Step 1: Take input
+        System.out.print("Enter Train ID: ");
+        String trainId = sc.nextLine();
 
-        // Step 2: Stream → map → reduce
-        int totalSeats = bogies.stream()
-                .map(b -> b.getCapacity())   // extract capacity
-                .reduce(0, Integer::sum);    // sum all
+        System.out.print("Enter Cargo Code: ");
+        String cargoCode = sc.nextLine();
 
-        // Step 3: Display result
-        System.out.println("\nBogies:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        // Step 2: Define regex patterns
+        String trainRegex = "TRN-\\d{4}";
+        String cargoRegex = "PET-[A-Z]{2}";
+
+        // Step 3: Compile patterns
+        Pattern trainPattern = Pattern.compile(trainRegex);
+        Pattern cargoPattern = Pattern.compile(cargoRegex);
+
+        // Step 4: Create matchers
+        Matcher trainMatcher = trainPattern.matcher(trainId);
+        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
+
+        // Step 5: Validate using matches()
+        boolean isTrainValid = trainMatcher.matches();
+        boolean isCargoValid = cargoMatcher.matches();
+
+        // Step 6: Output result
+        if (isTrainValid) {
+            System.out.println("Valid Train ID ✅");
+        } else {
+            System.out.println("Invalid Train ID ❌");
         }
 
-        System.out.println("\nTotal Seating Capacity: " + totalSeats);
+        if (isCargoValid) {
+            System.out.println("Valid Cargo Code ✅");
+        } else {
+            System.out.println("Invalid Cargo Code ❌");
+        }
+
+        sc.close();
     }
 }
