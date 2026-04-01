@@ -1,46 +1,30 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
-/**
- * Train Consist Management App - UC7
- * Demonstrates sorting using Comparator
- */
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Train Consist Management App ===");
+        System.out.println("=== UC9: Group Bogies by Type ===");
 
-        // Create list of bogies
+        // Step 1: Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
+        bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Luxury AC", 80));
+        bogies.add(new Bogie("AC Chair", 60));
 
-        // Sort bogies by capacity (ascending)
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+        // Step 2: Group bogies by name (type)
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
 
-        // Display sorted bogies
-        System.out.println("\nSorted Bogies (by Capacity):");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        // Step 3: Display grouped result
+        System.out.println("\nGrouped Bogies:");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
-    }
-}
-
-// Bogie class
-class Bogie {
-    String name;
-    int capacity;
-
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (Capacity: " + capacity + ")";
     }
 }
