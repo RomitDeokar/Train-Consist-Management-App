@@ -1,34 +1,53 @@
+import java.util.Arrays;
+
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=== UC18: Linear Search for Bogie ID ===");
+        System.out.println("=== UC19: Binary Search for Bogie ID ===");
 
-        // Step 1: Create array of bogie IDs (unsorted)
-        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
+        // Step 1: Unsorted array (real-world case)
+        String[] bogieIds = {"BG309","BG101","BG550","BG205","BG412"};
 
-        // Step 2: Search key
+        // Step 2: Sort before binary search (IMPORTANT)
+        Arrays.sort(bogieIds);
+
+        System.out.println("Sorted Bogie IDs: " + Arrays.toString(bogieIds));
+
+        // Step 3: Search key
         String searchKey = "BG309";
 
-        // Step 3: Call search function
-        boolean found = linearSearch(bogieIds, searchKey);
+        // Step 4: Binary Search
+        boolean found = binarySearch(bogieIds, searchKey);
 
-        // Step 4: Display result
+        // Step 5: Result
         if (found) {
-            System.out.println("Bogie ID " + searchKey + " FOUND in the train.");
+            System.out.println("Bogie ID " + searchKey + " FOUND.");
         } else {
             System.out.println("Bogie ID " + searchKey + " NOT FOUND.");
         }
     }
 
-    // Linear Search Method
-    public static boolean linearSearch(String[] arr, String key) {
+    // Binary Search Method
+    public static boolean binarySearch(String[] arr, String key) {
 
-        for (int i = 0; i < arr.length; i++) {
+        int low = 0;
+        int high = arr.length - 1;
 
-            // Compare using equals()
-            if (arr[i].equals(key)) {
-                return true; // Early stop
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int result = arr[mid].compareTo(key);
+
+            if (result == 0) {
+                return true; // Found
+            }
+            else if (result < 0) {
+                low = mid + 1; // Search right
+            }
+            else {
+                high = mid - 1; // Search left
             }
         }
 
