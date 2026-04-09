@@ -2,55 +2,43 @@ import java.util.Arrays;
 
 public class TrainConsistApp {
 
-    public static void main(String[] args) {
+    // Method for search with validation
+    public static boolean searchBogie(String[] bogies, String key) {
 
-        System.out.println("=== UC19: Binary Search for Bogie ID ===");
-
-        // Step 1: Unsorted array (real-world case)
-        String[] bogieIds = {"BG309","BG101","BG550","BG205","BG412"};
-
-        // Step 2: Sort before binary search (IMPORTANT)
-        Arrays.sort(bogieIds);
-
-        System.out.println("Sorted Bogie IDs: " + Arrays.toString(bogieIds));
-
-        // Step 3: Search key
-        String searchKey = "BG309";
-
-        // Step 4: Binary Search
-        boolean found = binarySearch(bogieIds, searchKey);
-
-        // Step 5: Result
-        if (found) {
-            System.out.println("Bogie ID " + searchKey + " FOUND.");
-        } else {
-            System.out.println("Bogie ID " + searchKey + " NOT FOUND.");
+        // ✅ Fail-fast validation
+        if (bogies == null || bogies.length == 0) {
+            throw new IllegalStateException("No bogies available for search");
         }
+
+        // ✅ Linear Search (you can reuse UC18 logic)
+        for (String b : bogies) {
+            if (b.equals(key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    // Binary Search Method
-    public static boolean binarySearch(String[] arr, String key) {
+    public static void main(String[] args) {
 
-        int low = 0;
-        int high = arr.length - 1;
+        // Example 1: Normal case
+        String[] bogies = {"BG101", "BG205", "BG309"};
 
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int result = arr[mid].compareTo(key);
-
-            if (result == 0) {
-                return true; // Found
-            }
-            else if (result < 0) {
-                low = mid + 1; // Search right
-            }
-            else {
-                high = mid - 1; // Search left
-            }
+        try {
+            boolean found = searchBogie(bogies, "BG205");
+            System.out.println("Search Result: " + found);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        return false; // Not found
+        // Example 2: Empty case
+        String[] emptyBogies = {};
+
+        try {
+            searchBogie(emptyBogies, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Handled Exception: " + e.getMessage());
+        }
     }
 }
