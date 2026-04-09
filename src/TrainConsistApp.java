@@ -1,21 +1,20 @@
+import java.util.Arrays;
+
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=== UC15: Safe Cargo Assignment ===");
+        System.out.println("=== UC17: Sort Bogie Names using Arrays.sort() ===");
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        // Step 1: Create array of bogie names
+        String[] bogies = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
 
-        // ✅ Safe
-        b1.assignCargo("Petroleum");
+        System.out.println("Before Sorting: " + Arrays.toString(bogies));
 
-        // ❌ Unsafe
-        b2.assignCargo("Petroleum");
+        // Step 2: Built-in sorting
+        Arrays.sort(bogies);
 
-        // ✅ Another safe
-        b2.assignCargo("Coal");
-
-        System.out.println("Program continues safely...");
+        // Step 3: Display result
+        System.out.println("After Sorting: " + Arrays.toString(bogies));
     }
 }
