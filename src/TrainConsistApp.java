@@ -1,27 +1,21 @@
-import java.util.*;
-
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        System.out.println("=== UC14: Custom Exception Handling ===");
+        System.out.println("=== UC15: Safe Cargo Assignment ===");
 
-        List<Bogie> bogies = new ArrayList<>();
+        GoodsBogie b1 = new GoodsBogie("Cylindrical");
+        GoodsBogie b2 = new GoodsBogie("Rectangular");
 
-        try {
-            bogies.add(new Bogie("Sleeper", 72));   // valid
-            bogies.add(new Bogie("AC Chair", 60));  // valid
+        // ✅ Safe
+        b1.assignCargo("Petroleum");
 
-            // ❌ Invalid bogie
-            bogies.add(new Bogie("Invalid Bogie", -10));
+        // ❌ Unsafe
+        b2.assignCargo("Petroleum");
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        // ✅ Another safe
+        b2.assignCargo("Coal");
 
-        System.out.println("\nFinal Bogies:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
-        }
+        System.out.println("Program continues safely...");
     }
 }
